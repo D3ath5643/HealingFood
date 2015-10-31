@@ -14,12 +14,9 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class HealingFoodListener implements Listener{
 
-    private HealingFoodMain plugin;
-    
     public HealingFoodListener(HealingFoodMain plugin)
     {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        this.plugin = plugin;
     }
     
     @EventHandler
@@ -33,7 +30,7 @@ public class HealingFoodListener implements Listener{
             if(regenLength < 0)
                 regenLength = 1;
             
-            if(e.getPlayer().hasPermission(plugin.regenPermission) &&
+            if(HealingFoodUtil.hasPermission(e.getPlayer(), "HealingFood.regen") &&
                     currPlayerHealth != (int)e.getPlayer().getMaxHealth())
                 e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,
                                                    regenLength,
@@ -41,7 +38,7 @@ public class HealingFoodListener implements Listener{
                                                    HealingFoodUtil.ambient,
                                                    HealingFoodUtil.particles));
             
-            if(e.getPlayer().hasPermission(plugin.regenPermission) &&
+            if(HealingFoodUtil.hasPermission(e.getPlayer(), "HealingFood.absorb") &&
                     HealingFoodUtil.absorptionOverflow && 
                     currPlayerHealth + regenHealth > (int)e.getPlayer().getMaxHealth())
             {
