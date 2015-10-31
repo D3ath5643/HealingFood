@@ -1,5 +1,9 @@
 package d3ath5643.healingFood;
 
+import java.util.HashMap;
+
+import org.bukkit.Material;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -9,6 +13,11 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @version: 1.0
  */
 public class HealingFoodMain extends JavaPlugin{
+    public Permission pluginPermissions = new Permission("HealingFood.*");
+    public HashMap<Material, Integer> saturationMap = new HashMap<Material, Integer>();
+    public boolean absorptionOverflow = true, ambient = true, particles = false;
+    public int regenLevel = 3, saturationToHealthRatio = 2, absorptionLength = 480;
+    
     
     @Override
     public void onEnable()

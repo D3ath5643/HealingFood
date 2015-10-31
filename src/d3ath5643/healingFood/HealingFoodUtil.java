@@ -1,12 +1,10 @@
 package d3ath5643.healingFood;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 
 /**
  * Class which contains all the utility functions for HealingFood.
@@ -14,13 +12,7 @@ import org.bukkit.permissions.Permission;
  * @author d3ath5643
  * @version 1.0
  */
-public class HealingFoodUtil {
-    public static Permission pluginPermissions = new Permission("HealingFood.*");
-    
-    public static HashMap<Material, Integer> saturationMap = new HashMap<Material, Integer>();
-    public static boolean absorptionOverflow = true, ambient = true, particles = false;
-    public static int regenLevel = 3, saturationToHealthRatio = 2, absorptionLength = 480;
-    
+public class HealingFoodUtil {    
     private static final int regenBaseTicks = 50, baseAbsorption = 4;
     
     public static void createConfig(HealingFoodMain plugin)
@@ -32,29 +24,29 @@ public class HealingFoodUtil {
     public static void loadConfig(HealingFoodMain plugin){
         populateSaturationMap(plugin);
         
-        ambient = plugin.getConfig().getBoolean("ambient");
-        particles = plugin.getConfig().getBoolean("particles");
+        plugin.ambient = plugin.getConfig().getBoolean("ambient");
+        plugin.particles = plugin.getConfig().getBoolean("particles");
         
-        regenLevel = plugin.getConfig().getInt("regenLevel");
-        saturationToHealthRatio = plugin.getConfig().getInt("saturationToHealthRatio");
-        absorptionLength = plugin.getConfig().getInt("absorptionLength");
+        plugin.regenLevel = plugin.getConfig().getInt("regenLevel");
+        plugin.saturationToHealthRatio = plugin.getConfig().getInt("saturationToHealthRatio");
+        plugin.absorptionLength = plugin.getConfig().getInt("absorptionLength");
         
-        if(regenLevel <= 0)
-            regenLevel = 1;
-        if(saturationToHealthRatio <= 0)
-            saturationToHealthRatio = 1;
-        if(absorptionLength <= 0)
-            absorptionOverflow = false;
+        if(plugin.regenLevel <= 0)
+            plugin.regenLevel = 1;
+        if(plugin.saturationToHealthRatio <= 0)
+            plugin.saturationToHealthRatio = 1;
+        if(plugin.absorptionLength <= 0)
+            plugin.absorptionOverflow = false;
     }
     
     public static void addPermissions(HealingFoodMain plugin)
     {
-        Map<String, Boolean> children = pluginPermissions.getChildren();
+        Map<String, Boolean> children = plugin.pluginPermissions.getChildren();
         children.put("HealingFood.regen", true);
         children.put("HealingFood.absorb", true);
-        pluginPermissions.recalculatePermissibles();
+        plugin.pluginPermissions.recalculatePermissibles();
         
-        plugin.getServer().getPluginManager().addPermission(pluginPermissions);
+        plugin.getServer().getPluginManager().addPermission(plugin.pluginPermissions);
     }
     
     public static boolean hasPermission(Player p, String perName)
@@ -62,16 +54,16 @@ public class HealingFoodUtil {
         return p.hasPermission(perName) || p.hasPermission("HealingFood.*");
     }
     
-    public static int getLength(Material mat)
+    public static int getLength(HealingFoodMain plugin, Material mat)
     {
-        int restoreHealth = getRestoreHealth(mat);
+        int restoreHealth = getRestoreHealth(plugin, mat);
         return (int)Math.ceil((restoreHealth * regenBaseTicks) / 
-                Math.pow(2, HealingFoodUtil.regenLevel - 1));
+                Math.pow(2, plugin.regenLevel - 1));
     }
     
-    public static int getRestoreHealth(Material mat)
+    public static int getRestoreHealth(HealingFoodMain plugin, Material mat)
     {
-        return saturationMap.get(mat) / saturationToHealthRatio;
+        return plugin.saturationMap.get(mat) / plugin.saturationToHealthRatio;
     }
     
     public static int getAbsorptionLevel(int extraHealth)
@@ -112,7 +104,7 @@ public class HealingFoodUtil {
                 if(matVal < 0)
                     matVal = 0;
                 
-                saturationMap.put(matKey, matVal);
+                plugin.saturationMap.put(matKey, matVal);
             }
         } 
         else

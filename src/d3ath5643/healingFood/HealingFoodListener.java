@@ -14,17 +14,20 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class HealingFoodListener implements Listener{
 
+    HealingFoodMain plugin;
+    
     public HealingFoodListener(HealingFoodMain plugin)
     {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        this.plugin = plugin;
     }
     
     @EventHandler
     public void onPlayerItemConsume(PlayerItemConsumeEvent e){
-        if(HealingFoodUtil.saturationMap.containsKey(e.getItem().getType()))
+        if(plugin.saturationMap.containsKey(e.getItem().getType()))
         {
-            int regenLength = HealingFoodUtil.getLength(e.getItem().getType());
-            int regenHealth = HealingFoodUtil.getRestoreHealth(e.getItem().getType());
+            int regenLength = HealingFoodUtil.getLength(plugin, e.getItem().getType());
+            int regenHealth = HealingFoodUtil.getRestoreHealth(plugin, e.getItem().getType());
             int currPlayerHealth = (int) e.getPlayer().getHealth();
             
             if(regenLength < 0)
@@ -34,12 +37,12 @@ public class HealingFoodListener implements Listener{
                     currPlayerHealth != (int)e.getPlayer().getMaxHealth())
                 e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,
                                                    regenLength,
-                                                   HealingFoodUtil.regenLevel - 1,
-                                                   HealingFoodUtil.ambient,
-                                                   HealingFoodUtil.particles));
+                                                   plugin.regenLevel - 1,
+                                                   plugin.ambient,
+                                                   plugin.particles));
             
             if(HealingFoodUtil.hasPermission(e.getPlayer(), "HealingFood.absorb") &&
-                    HealingFoodUtil.absorptionOverflow && 
+                    plugin.absorptionOverflow && 
                     currPlayerHealth + regenHealth > (int)e.getPlayer().getMaxHealth())
             {
                 int extraHealth = currPlayerHealth + regenHealth - (int) e.getPlayer().getMaxHealth();
@@ -49,10 +52,10 @@ public class HealingFoodListener implements Listener{
                     absorptionLevel = 1;
                 
                 e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,
-                                                   HealingFoodUtil.absorptionLength,
+                                                   plugin.absorptionLength,
                                                    absorptionLevel - 1,
-                                                   HealingFoodUtil.ambient,
-                                                   HealingFoodUtil.particles), true);
+                                                   plugin.ambient,
+                                                   plugin.particles), true);
             }
         }
     }
