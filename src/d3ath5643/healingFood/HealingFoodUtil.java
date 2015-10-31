@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
 /**
  * Class which contains all the utility functions for HealingFood.
@@ -14,6 +15,8 @@ import org.bukkit.entity.Player;
  * @version 1.0
  */
 public class HealingFoodUtil {
+    public static Permission pluginPermissions = new Permission("HealingFood.*");
+    
     public static HashMap<Material, Integer> saturationMap = new HashMap<Material, Integer>();
     public static boolean absorptionOverflow = true, ambient = true, particles = false;
     public static int regenLevel = 3, saturationToHealthRatio = 2, absorptionLength = 480;
@@ -46,16 +49,17 @@ public class HealingFoodUtil {
     
     public static void addPermissions(HealingFoodMain plugin)
     {
-        Map<String, Boolean> children = plugin.pluginPermissions.getChildren();
+        Map<String, Boolean> children = pluginPermissions.getChildren();
         children.put("HealingFood.regen", true);
         children.put("HealingFood.absorb", true);
-        plugin.pluginPermissions.recalculatePermissibles();
+        pluginPermissions.recalculatePermissibles();
         
+        plugin.getServer().getPluginManager().addPermission(pluginPermissions);
     }
     
     public static boolean hasPermission(Player p, String perName)
     {
-        return p.hasPermission(perName) || p.hasPermission("*");
+        return p.hasPermission(perName) || p.hasPermission("HealingFood.*");
     }
     
     public static int getLength(Material mat)

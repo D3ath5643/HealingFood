@@ -11,8 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class HealingFoodMain extends JavaPlugin{
     
-    public Permission pluginPermissions = new Permission("HealingFood.*");
-    
     @Override
     public void onEnable()
     {
