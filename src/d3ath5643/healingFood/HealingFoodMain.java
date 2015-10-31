@@ -1,6 +1,5 @@
 package d3ath5643.healingFood;
 
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
