@@ -15,8 +15,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class HealingFoodMain extends JavaPlugin{
     public Permission pluginPermissions = new Permission("HealingFood.*");
     public HashMap<Material, Integer> saturationMap = new HashMap<Material, Integer>();
+    public HashMap<Material, Integer> hungerMap = new HashMap<Material, Integer>();
     public boolean absorptionOverflow = true, ambient = true, particles = false;
     public int regenLevel = 3, saturationToHealthRatio = 2, absorptionLength = 480;
+    public int requiredHunger = 0;
     
     
     @Override

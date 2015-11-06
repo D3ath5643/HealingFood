@@ -1,5 +1,6 @@
 package d3ath5643.healingFood;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -22,7 +23,8 @@ public class HealingFoodUtil {
     }
     
     public static void loadConfig(HealingFoodMain plugin){
-        populateSaturationMap(plugin);
+        populateMap(plugin, plugin.saturationMap, "saturationList");
+        populateMap(plugin, plugin.hungerMap, "hungerList");
         
         plugin.ambient = plugin.getConfig().getBoolean("ambient");
         plugin.particles = plugin.getConfig().getBoolean("particles");
@@ -30,6 +32,7 @@ public class HealingFoodUtil {
         plugin.regenLevel = plugin.getConfig().getInt("regenLevel");
         plugin.saturationToHealthRatio = plugin.getConfig().getInt("saturationToHealthRatio");
         plugin.absorptionLength = plugin.getConfig().getInt("absorptionLength");
+        plugin.requiredHunger = plugin.getConfig().getInt("requireHungerLevel");
         
         if(plugin.regenLevel <= 0)
             plugin.regenLevel = 1;
@@ -71,11 +74,15 @@ public class HealingFoodUtil {
         return (int)Math.ceil((double) extraHealth / baseAbsorption);
     }
     
-    private static void populateSaturationMap(HealingFoodMain plugin)
+    private static void populateMap(HealingFoodMain plugin, 
+                                    HashMap<Material, Integer> map,
+                                    String configName)
     {
-        if(plugin.getConfig().get("foodList") instanceof MemorySection)
+        map.clear();
+        
+        if(plugin.getConfig().get(configName) instanceof MemorySection)
         {
-            MemorySection foodListMemSection = (MemorySection) plugin.getConfig().get("foodList");
+            MemorySection foodListMemSection = (MemorySection) plugin.getConfig().get(configName);
             Map<String, Object> foodList = foodListMemSection.getValues(false);
             
             for(String mat: foodList.keySet())
@@ -104,13 +111,13 @@ public class HealingFoodUtil {
                 if(matVal < 0)
                     matVal = 0;
                 
-                plugin.saturationMap.put(matKey, matVal);
+                map.put(matKey, matVal);
             }
         } 
         else
         {
-            plugin.getLogger().warning("Due to a formatting error in foodList, " +
-                                       "the saturation map could not be populated!" +
+            plugin.getLogger().warning("Due to a formatting error in " + configName +", " +
+                                       "a map could not be populated!" +
                                        " The HealingFood plugin will not work properly" +
                                        " untill this issue is fixed!");
         }

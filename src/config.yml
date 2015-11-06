@@ -1,9 +1,10 @@
-regenLevel: 3
-saturationToHealthRatio: 2
+regenLevel: 5
+requireHungerLevel: 17
+saturationToHealthRatio: 1
 absorptionLength: 1200
 ambient: true
 particles: false
-foodList:
+saturationList:
   APPLE: 2
   BAKED_POTATO: 7
   BREAD: 6
@@ -31,4 +32,32 @@ foodList:
   RAW_FISH: 0
   ROTTEN_FLESH: 0
   SPIDER_EYE: 3
+hungerList:
+  APPLE: 4
+  BAKED_POTATO: 5
+  BREAD: 5
+  CARROT_ITEM: 3
+  COOKED_CHICKEN: 6
+  COOKED_FISH: 5
+  COOKED_MUTTON: 6
+  COOKED_BEEF: 8
+  COOKED_RABBIT: 5
+  COOKIE: 2
+  GOLDEN_APPLE: 4
+  GOLDEN_CARROT: 6
+  GRILLED_PORK: 8
+  MELON: 2
+  MUSHROOM_SOUP: 6
+  MUTTON: 2
+  POISONOUS_POTATO: 2
+  PORK: 3
+  POTATO_ITEM: 1
+  PUMPKIN_PIE: 8
+  RABBIT: 3
+  RABBIT_STEW: 10
+  RAW_BEEF: 3
+  RAW_CHICKEN: 2
+  RAW_FISH: 2
+  ROTTEN_FLESH: 4
+  SPIDER_EYE: 2
   

@@ -24,7 +24,8 @@ public class HealingFoodListener implements Listener{
     
     @EventHandler
     public void onPlayerItemConsume(PlayerItemConsumeEvent e){
-        if(plugin.saturationMap.containsKey(e.getItem().getType()))
+        if(plugin.saturationMap.containsKey(e.getItem().getType()) &&
+           e.getPlayer().getFoodLevel() + plugin.hungerMap.get(e.getItem().getType()) >= plugin.requiredHunger)
         {
             int regenLength = HealingFoodUtil.getLength(plugin, e.getItem().getType());
             int regenHealth = HealingFoodUtil.getRestoreHealth(plugin, e.getItem().getType());
